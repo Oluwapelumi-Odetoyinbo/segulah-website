@@ -1,4 +1,5 @@
-import { Navbar, Footer } from './components/layout';
+import { useState } from 'react';
+import { Navbar, Footer, LoadingScreen } from './components/layout';
 import {
   Hero,
   SocialProof,
@@ -12,6 +13,12 @@ import {
 } from './components/sections';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  if (isLoading) {
+    return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
+  }
+
   return (
     <div className="min-h-screen">
       <Navbar />

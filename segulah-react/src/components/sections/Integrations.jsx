@@ -162,19 +162,7 @@ const HowItWorks = () => {
           })}
         </div>
 
-        {/* Progress indicator */}
-        <div className="mt-12 max-w-md mx-auto">
-          <div className="flex justify-between text-xs text-slate-400 mb-2">
-            <span>Progress</span>
-            <span>{Math.max(activeStep + 1, 0)} of {steps.length}</span>
-          </div>
-          <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-mlm-green-500 transition-all duration-700 ease-out rounded-full"
-              style={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
-            ></div>
-          </div>
-        </div>
+       
 
         {/* CTA */}
         <div className={`text-center mt-12 transition-all duration-700 ${activeStep >= steps.length - 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
