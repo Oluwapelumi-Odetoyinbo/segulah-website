@@ -6,7 +6,7 @@ import Lottie from 'lottie-react';
 import loginSignupAnimation from '../../assets/Login and Sign up.json';
 import inviteFriendsAnimation from '../../assets/Invite Friends or Share with Friends.json';
 import shareAnimation from '../../assets/Share.json';
-import moneyStackAnimation from '../../assets/Money Stack.json';
+import moneyStackAnimation from '../../assets/Money stack.json';
 
 const HowItWorks = () => {
   const [activeStep, setActiveStep] = useState(-1);
