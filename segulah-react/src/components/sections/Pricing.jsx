@@ -222,12 +222,15 @@ const Pricing = () => {
                     <span className={`text-sm ${pkg.featured ? 'text-mlm-green-200' : 'text-slate-400'}`}>one-time</span>
                   </div>
                   
-                  <button 
-                    className={`w-full py-3 rounded-lg font-semibold transition-colors mb-6 text-sm ${pkg.buttonStyle}`}
+                  <a 
+                    href="https://mlm-user-fe.onrender.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block w-full py-3 rounded-lg font-semibold transition-colors mb-6 text-sm text-center ${pkg.buttonStyle}`}
                     onClick={(e) => e.stopPropagation()}
                   >
                     {pkg.buttonText}
-                  </button>
+                  </a>
                   
                   <div className="space-y-3">
                     {pkg.features.map((feature, fIndex) => (

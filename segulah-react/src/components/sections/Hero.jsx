@@ -88,14 +88,14 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 rounded-full text-base font-semibold transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20">
+              <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-full text-base font-semibold transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20 inline-flex items-center justify-center">
                 Get Started Free
-                <Icon icon="solar:arrow-right-linear" className="inline ml-2" />
-              </button>
-              <button className="px-8 py-4 rounded-full text-base font-semibold transition-all border-2 border-slate-200 text-slate-700 hover:border-mlm-green-500 hover:text-mlm-green-500">
-                <Icon icon="solar:play-circle-bold" className="inline mr-2" />
+                <Icon icon="solar:arrow-right-linear" className="ml-2" />
+              </a>
+              <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-full text-base font-semibold transition-all border-2 border-slate-200 text-slate-700 hover:border-mlm-green-500 hover:text-mlm-green-500 inline-flex items-center justify-center">
+                <Icon icon="solar:play-circle-bold" className="mr-2" />
                 Watch Demo
-              </button>
+              </a>
             </div>
           </div>
 
@@ -151,14 +151,14 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <button className="px-8 py-4 rounded-full text-base font-semibold transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20">
+          <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-full text-base font-semibold transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20 inline-flex items-center justify-center">
             Get Started Free
-            <Icon icon="solar:arrow-right-linear" className="inline ml-2" />
-          </button>
-          <button className="px-8 py-4 rounded-full text-base font-semibold transition-all border-2 border-slate-200 text-slate-700 hover:border-mlm-green-500 hover:text-mlm-green-500">
-            <Icon icon="solar:play-circle-bold" className="inline mr-2" />
+            <Icon icon="solar:arrow-right-linear" className="ml-2" />
+          </a>
+          <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-full text-base font-semibold transition-all border-2 border-slate-200 text-slate-700 hover:border-mlm-green-500 hover:text-mlm-green-500 inline-flex items-center justify-center">
+            <Icon icon="solar:play-circle-bold" className="mr-2" />
             Watch Demo
-          </button>
+          </a>
         </div>
 
         <DashboardMockup />

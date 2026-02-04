@@ -32,14 +32,14 @@ const Footer = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 font-semibold rounded-full transition-colors flex items-center justify-center gap-2 bg-mlm-green-500 text-white hover:bg-mlm-green-600">
+            <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 font-semibold rounded-full transition-colors flex items-center justify-center gap-2 bg-mlm-green-500 text-white hover:bg-mlm-green-600">
               Create Free Account
               <Icon icon="solar:arrow-right-linear" />
-            </button>
-            <button className="px-8 py-4 font-semibold rounded-full transition-colors flex items-center justify-center gap-2 bg-slate-800 text-white hover:bg-slate-700 border border-slate-700">
+            </a>
+            <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 font-semibold rounded-full transition-colors flex items-center justify-center gap-2 bg-slate-800 text-white hover:bg-slate-700 border border-slate-700">
               <Icon icon="solar:phone-calling-bold-duotone" />
               Contact Sales
-            </button>
+            </a>
           </div>
         </div>
 

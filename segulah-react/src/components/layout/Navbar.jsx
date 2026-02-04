@@ -23,6 +23,7 @@ const Navbar = () => {
               alt="Segulah Global" 
               className="h-10 w-auto"
             />
+            <span className="font-display font-bold text-lg text-slate-900">Segulah Global</span>
           </div>
 
           {/* Desktop Links */}
@@ -36,10 +37,10 @@ const Navbar = () => {
 
           {/* CTA */}
           <div className="flex items-center gap-4">
-            <button className="hidden sm:block text-sm font-medium text-slate-600 hover:text-mlm-green-500">Sign in</button>
-            <button className="px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20">
+            <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-sm font-medium text-slate-600 hover:text-mlm-green-500">Sign in</a>
+            <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20">
               Get Started
-            </button>
+            </a>
             
             {/* Mobile menu button */}
             <button 
@@ -66,9 +67,9 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="pt-4 border-t border-slate-100">
-                <button className="w-full px-4 py-2 rounded-full text-sm font-medium transition-all bg-mlm-green-500 text-white hover:bg-mlm-green-600">
+                <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="block w-full px-4 py-2 rounded-full text-sm font-medium transition-all bg-mlm-green-500 text-white hover:bg-mlm-green-600 text-center">
                   Get Started
-                </button>
+                </a>
               </div>
             </div>
           </div>
