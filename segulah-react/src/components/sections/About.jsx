@@ -3,8 +3,8 @@ import CardSwap, { Card } from '../ui/CardSwap';
 
 const About = () => {
   return (
-    <section className="py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 px-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-16 items-center">
         {/* Text Side - Left */}
         <div>
@@ -38,7 +38,7 @@ const About = () => {
         </div>
 
         {/* CardSwap Side - Right - Intentionally cropped at edge */}
-        <div className="relative h-125 -mr-4 sm:-mr-6 lg:-mr-8 xl:-mr-32">
+        <div className="relative h-125">
           <CardSwap
             width={580}
             height={440}
