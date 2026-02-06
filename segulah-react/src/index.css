@@ -69,3 +69,76 @@
 .animate-bar-grow {
   animation: bar-grow 3s ease-in-out infinite;
 }
+
+/* Zoom In Animation */
+@keyframes zoom-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-zoom-in {
+  animation: zoom-in 0.8s ease-out forwards;
+}
+
+/* Staggered zoom-in delays for child elements */
+.animate-zoom-in-delay-1 {
+  animation: zoom-in 0.8s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.animate-zoom-in-delay-2 {
+  animation: zoom-in 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-zoom-in-delay-3 {
+  animation: zoom-in 0.8s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-zoom-in-delay-4 {
+  animation: zoom-in 0.8s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+/* Slide Up Animation */
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.7s ease-out forwards;
+}
+
+.animate-slide-up-delay-1 {
+  animation: slide-up 0.7s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-delay-2 {
+  animation: slide-up 0.7s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-delay-3 {
+  animation: slide-up 0.7s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-delay-4 {
+  animation: slide-up 0.7s ease-out 0.4s forwards;
+  opacity: 0;
+}

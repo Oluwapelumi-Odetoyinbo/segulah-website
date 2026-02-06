@@ -5,7 +5,7 @@ const SocialProof = () => {
     { value: 10000, label: 'Active Members', prefix: '', suffix: '+' },
     { value: 50, label: 'Paid Out Monthly', prefix: '₦', suffix: 'M+' },
     { value: 36, label: 'States Covered', prefix: '', suffix: '' },
-    { value: 99.9, label: 'Platform Uptime', prefix: '', suffix: '%' },
+    { value: 4.9, label: 'Member Rating', prefix: '', suffix: '/5' },
   ];
 
   const [counts, setCounts] = useState(stats.map(() => 0));
@@ -52,11 +52,17 @@ const SocialProof = () => {
 
   const formatNumber = (num, index) => {
     const stat = stats[index];
-    const displayNum = stat.value >= 1000 
-      ? Math.round(num).toLocaleString() 
-      : stat.value % 1 !== 0 
-        ? num.toFixed(1) 
-        : Math.round(num);
+    let displayNum;
+    
+    if (stat.value >= 1000) {
+      displayNum = Math.round(num).toLocaleString();
+    } else if (Number.isInteger(stat.value)) {
+      displayNum = Math.round(num);
+    } else {
+      // For decimal values like 4.9, always show one decimal place
+      displayNum = num.toFixed(1);
+    }
+    
     return `${stat.prefix}${displayNum}${stat.suffix}`;
   };
 

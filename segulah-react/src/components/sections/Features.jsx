@@ -2,6 +2,27 @@ import { useState, useEffect, useRef } from 'react';
 import { Icon } from '@iconify/react';
 
 const Features = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (headerRef.current) {
+      observer.observe(headerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const features = [
     {
       icon: 'solar:chart-square-bold-duotone',
@@ -45,15 +66,15 @@ const Features = () => {
     <section id="features" className="py-24 border-t bg-white border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
+        <div ref={headerRef} className="text-center mb-16">
+          <div className={`inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500 ${isVisible ? 'animate-zoom-in' : 'opacity-0'}`}>
             <Icon icon="solar:widget-bold-duotone" />
             <span className="text-sm uppercase tracking-wider">Features</span>
           </div>
-          <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 text-slate-900">
+          <h2 className={`font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 text-slate-900 ${isVisible ? 'animate-zoom-in-delay-1' : 'opacity-0'}`}>
             Everything you need to succeed
           </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+          <p className={`text-lg text-slate-500 max-w-2xl mx-auto ${isVisible ? 'animate-zoom-in-delay-2' : 'opacity-0'}`}>
             Powerful tools designed specifically for MLM affiliates to track, grow, and manage their business.
           </p>
         </div>

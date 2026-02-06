@@ -4,6 +4,7 @@ export { default as SocialProof } from './SocialProof';
 export { default as About } from './About';
 export { default as Features } from './Features';
 export { default as Products } from './Products';
+export { default as MagicBento } from './MagicBento';
 export { default as Pricing } from './Pricing';
 export { default as HowItWorks } from './Integrations';
 export { default as Testimonials } from './Testimonials';

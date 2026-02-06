@@ -29,6 +29,33 @@ const Testimonials = () => {
       highlight: 'upgraded to Ruby within 3 months',
       earnings: '₦450,000/month',
     },
+    {
+      name: 'Ibrahim Sule',
+      role: 'Gold Member',
+      location: 'Kano, Nigeria',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      quote: 'The weekly bonuses have been a game changer for my family. I hit my first milestone in just 5 weeks and reinvested to grow faster.',
+      highlight: 'hit my first milestone in just 5 weeks',
+      earnings: '₦320,000/month',
+    },
+    {
+      name: 'Chiamaka Uche',
+      role: 'Emerald Member',
+      location: 'Enugu, Nigeria',
+      image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      quote: 'I love how transparent the commissions are. I can see every payout breakdown and the support team is always available.',
+      highlight: 'see every payout breakdown',
+      earnings: '₦1.3M/month',
+    },
+    {
+      name: 'Tolu Adebayo',
+      role: 'Silver Member',
+      location: 'Ibadan, Nigeria',
+      image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      quote: 'The marketplace discounts are real value. I use my wallet to buy essentials and still earn from my network.',
+      highlight: 'use my wallet to buy essentials',
+      earnings: '₦210,000/month',
+    },
   ];
 
   return (
@@ -47,13 +74,15 @@ const Testimonials = () => {
             Join thousands of Nigerians who are building wealth through Segulah Global.
           </p>
         </div>
+      </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+      {/* Testimonials Marquee (full width) */}
+      <div className="relative overflow-hidden w-screen left-1/2 right-1/2 -mx-[50vw]">
+        <div className="flex gap-8 animate-testimonials-marquee">
+          {[...testimonials, ...testimonials].map((testimonial, index) => (
             <div
-              key={index}
-              className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-lg transition-shadow"
+              key={`${testimonial.name}-${index}`}
+              className="min-w-75 sm:min-w-90 lg:min-w-95 bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-lg transition-shadow"
             >
               {/* Quote Icon */}
               <Icon icon="solar:quote-up-bold-duotone" width="40" className="mb-6 text-mlm-green-200" />
@@ -86,8 +115,18 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
+        <style>{`
+          @keyframes testimonials-marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-testimonials-marquee {
+            animation: testimonials-marquee 40s linear infinite;
+          }
+        `}</style>
+      </div>
 
-        {/* Stats Bar */}
+      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 p-8 bg-mlm-green-500 rounded-2xl text-white">
           {[
             { value: '10,000+', label: 'Active Members' },
@@ -101,7 +140,7 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

@@ -6,6 +6,7 @@ import {
   About,
   Features,
   Products,
+  MagicBento,
   Pricing,
   HowItWorks,
   Testimonials,
@@ -25,6 +26,7 @@ function App() {
       <main>
         <Hero />
         <SocialProof />
+        <MagicBento />
         <About />
         <Features />
         <Products />

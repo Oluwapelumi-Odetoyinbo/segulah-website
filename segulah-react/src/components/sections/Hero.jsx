@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import Lottie from 'lottie-react';
 import DashboardMockup from './DashboardMockup';
@@ -9,6 +9,27 @@ const Hero = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const heroRef = useRef(null);
+
+  // Intersection Observer to detect when Hero section is in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // Only trigger once
+        }
+      },
+      { threshold: 0.1 } // Trigger when 10% of the section is visible
+    );
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const currentWord = words[currentWordIndex];
@@ -39,7 +60,7 @@ const Hero = () => {
   }, [displayText, isDeleting, currentWordIndex, words]);
 
   return (
-    <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden min-h-screen flex items-center">
+    <section ref={heroRef} className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden min-h-screen flex items-center">
       {/* Ambient Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-250 h-150 rounded-[100%] blur-3xl -z-10 pointer-events-none bg-mlm-green-100/40"></div>
 
@@ -67,13 +88,13 @@ const Hero = () => {
           {/* Left Side - Content */}
           <div className="text-left">
             {/* Pill Label */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium mb-8 bg-mlm-green-50 border-mlm-green-100 text-mlm-green-500">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium mb-8 bg-mlm-green-50 border-mlm-green-100 text-mlm-green-500 ${isVisible ? 'animate-zoom-in' : 'opacity-0'}`}>
               <Icon icon="solar:users-group-rounded-bold-duotone" />
               <span>Your MLM Business Hub</span>
             </div>
 
             {/* Headline */}
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] text-slate-900">
+            <h1 className={`font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] text-slate-900 ${isVisible ? 'animate-zoom-in-delay-1' : 'opacity-0'}`}>
               Build your network,<br />
               <span className="text-mlm-green-500">
                 grow your {displayText}
@@ -82,12 +103,12 @@ const Hero = () => {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-lg text-slate-500 max-w-xl mb-10 leading-relaxed">
+            <p className={`text-lg text-slate-500 max-w-xl mb-10 leading-relaxed ${isVisible ? 'animate-zoom-in-delay-2' : 'opacity-0'}`}>
               Segulah Global is your all-in-one platform to manage your MLM business. Track earnings, grow your referral network, shop the marketplace, and withdraw your commissions — all in one place.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className={`flex flex-col sm:flex-row gap-4 ${isVisible ? 'animate-zoom-in-delay-3' : 'opacity-0'}`}>
               <a href="https://mlm-user-fe.onrender.com/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-full text-base font-semibold transition-all shadow-lg bg-mlm-green-500 text-white hover:bg-mlm-green-600 shadow-mlm-green-500/20 inline-flex items-center justify-center">
                 Get Started Free
                 <Icon icon="solar:arrow-right-linear" className="ml-2" />
@@ -100,7 +121,7 @@ const Hero = () => {
           </div>
 
           {/* Right Side - Dashboard Mockup */}
-          <div className="relative lg:pl-8">
+          <div className={`relative lg:pl-8 ${isVisible ? 'animate-zoom-in-delay-4' : 'opacity-0'}`}>
             <DashboardMockup />
           </div>
 
