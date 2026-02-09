@@ -1,26 +1,50 @@
 import { useState, useEffect, useRef } from 'react';
 import { Icon } from '@iconify/react';
+import { useGSAP, gsap } from '../../hooks/useGSAP';
 
 const Features = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const headerRef = useRef(null);
+  const cardsRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (headerRef.current) {
-      observer.observe(headerRef.current);
+  useGSAP(() => {
+    // Header animation
+    const headerElements = headerRef.current?.children;
+    if (headerElements) {
+      gsap.set(headerElements, { opacity: 0, y: 30 });
+      
+      gsap.to(headerElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
     }
 
-    return () => observer.disconnect();
+    // Cards stagger animation
+    const cards = cardsRef.current?.children;
+    if (cards) {
+      gsap.set(cards, { opacity: 0, y: 60, scale: 0.95 });
+      
+      gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
   }, []);
 
   const features = [
@@ -67,19 +91,19 @@ const Features = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div ref={headerRef} className="text-center mb-16">
-          <div className={`inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500 ${isVisible ? 'animate-zoom-in' : 'opacity-0'}`}>
+          <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
             <Icon icon="solar:widget-bold-duotone" />
             <span className="text-sm uppercase tracking-wider">Features</span>
           </div>
-          <h2 className={`font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 text-slate-900 ${isVisible ? 'animate-zoom-in-delay-1' : 'opacity-0'}`}>
+          <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 text-slate-900">
             Everything you need to succeed
           </h2>
-          <p className={`text-lg text-slate-500 max-w-2xl mx-auto ${isVisible ? 'animate-zoom-in-delay-2' : 'opacity-0'}`}>
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
             Powerful tools designed specifically for MLM affiliates to track, grow, and manage their business.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={cardsRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
@@ -102,6 +126,7 @@ const Features = () => {
     </section>
   );
 };
+
 
 const FeatureMockup = ({ type }) => {
   const [isVisible, setIsVisible] = useState(false);
