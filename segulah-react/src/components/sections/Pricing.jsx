@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import { useGSAP, gsap } from '../../hooks/useGSAP';
 
 const Pricing = () => {
   const [currency, setCurrency] = useState('NGN'); // NGN or USD
   const [activeIndex, setActiveIndex] = useState(2); // Start with Platinum (middle)
+  const headerRef = useRef(null);
+  const cardsContainerRef = useRef(null);
 
   const exchangeRate = 1500; // NGN per USD
 
@@ -95,6 +98,44 @@ const Pricing = () => {
     },
   ];
 
+  useGSAP(() => {
+    // Header animation
+    const headerElements = headerRef.current?.children;
+    if (headerElements) {
+      gsap.set(headerElements, { opacity: 0, y: 30 });
+      
+      gsap.to(headerElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // Cards container reveal
+    if (cardsContainerRef.current) {
+      gsap.set(cardsContainerRef.current, { opacity: 0, y: 40 });
+      
+      gsap.to(cardsContainerRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: cardsContainerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+  }, []);
+
   const formatPrice = (priceUSD) => {
     if (currency === 'USD') {
       return `$${priceUSD.toLocaleString()}`;
@@ -136,7 +177,7 @@ const Pricing = () => {
   return (
     <section id="pricing" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div ref={headerRef} className="text-center mb-16">
           <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
             <Icon icon="solar:tag-price-bold-duotone" />
             <span className="text-sm uppercase tracking-wider">Membership Packages</span>
@@ -174,18 +215,18 @@ const Pricing = () => {
         </div>
 
         {/* Stacked Cards Container */}
-        <div className="relative flex items-center justify-center">
+        <div ref={cardsContainerRef} className="relative flex items-center justify-center px-4 md:px-0">
           {/* Left Navigation Button */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 md:left-8 lg:left-16 z-50 w-12 h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-all hover:scale-110"
+            className="absolute -left-2 md:left-8 lg:left-16 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-all hover:scale-110"
             aria-label="Previous package"
           >
-            <Icon icon="solar:arrow-left-linear" width="24" />
+            <Icon icon="solar:arrow-left-linear" width="20" className="md:w-6" />
           </button>
 
           {/* Cards Stack */}
-          <div className="relative w-full max-w-md h-130 mx-16 md:mx-24">
+          <div className="relative w-full max-w-sm md:max-w-md h-[460px] md:h-130 mx-10 md:mx-24">
             {packages.map((pkg, index) => {
               const isActive = index === activeIndex;
               const style = getCardStyle(index);
@@ -194,7 +235,7 @@ const Pricing = () => {
                 <div
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`absolute inset-0 rounded-2xl p-8 cursor-pointer transition-all duration-500 ease-out ${
+                  className={`absolute inset-0 rounded-2xl p-5 md:p-8 cursor-pointer transition-all duration-500 ease-out ${
                     pkg.featured
                       ? 'shadow-2xl bg-mlm-green-500 text-white shadow-mlm-green-500/30'
                       : 'border shadow-lg bg-white border-slate-200'
@@ -215,26 +256,26 @@ const Pricing = () => {
                   
                   <p className={`text-sm mb-4 ${pkg.featured ? 'text-mlm-green-100' : 'text-slate-500'}`}>{pkg.description}</p>
                   
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className={`text-4xl font-bold tracking-tight ${pkg.featured ? '' : 'text-slate-900'}`}>
+                  <div className="flex items-baseline gap-1 mb-4 md:mb-6">
+                    <span className={`text-3xl md:text-4xl font-bold tracking-tight ${pkg.featured ? '' : 'text-slate-900'}`}>
                       {formatPrice(pkg.priceUSD)}
                     </span>
-                    <span className={`text-sm ${pkg.featured ? 'text-mlm-green-200' : 'text-slate-400'}`}>one-time</span>
+                    <span className={`text-xs md:text-sm ${pkg.featured ? 'text-mlm-green-200' : 'text-slate-400'}`}>one-time</span>
                   </div>
                   
                   <a 
                     href="https://mlm-user-fe.onrender.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`block w-full py-3 rounded-lg font-semibold transition-colors mb-6 text-sm text-center ${pkg.buttonStyle}`}
+                    className={`block w-full py-2.5 md:py-3 rounded-lg font-semibold transition-colors mb-4 md:mb-6 text-sm text-center ${pkg.buttonStyle}`}
                     onClick={(e) => e.stopPropagation()}
                   >
                     {pkg.buttonText}
                   </a>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {pkg.features.map((feature, fIndex) => (
-                      <div key={fIndex} className={`flex items-start gap-2 text-sm ${pkg.featured ? '' : 'text-slate-600'}`}>
+                      <div key={fIndex} className={`flex items-start gap-2 text-xs md:text-sm ${pkg.featured ? '' : 'text-slate-600'}`}>
                         <Icon
                           icon="solar:check-circle-bold"
                           className={`mt-0.5 shrink-0 ${pkg.featured ? 'text-mlm-green-200' : 'text-mlm-green-500'}`}
@@ -252,10 +293,10 @@ const Pricing = () => {
           {/* Right Navigation Button */}
           <button
             onClick={handleNext}
-            className="absolute right-0 md:right-8 lg:right-16 z-50 w-12 h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-all hover:scale-110"
+            className="absolute -right-2 md:right-8 lg:right-16 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-all hover:scale-110"
             aria-label="Next package"
           >
-            <Icon icon="solar:arrow-right-linear" width="24" />
+            <Icon icon="solar:arrow-right-linear" width="20" className="md:w-6" />
           </button>
         </div>
 

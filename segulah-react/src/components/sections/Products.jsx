@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Icon } from '@iconify/react';
+import { useGSAP, gsap } from '../../hooks/useGSAP';
 
 const Products = () => {
   const products = [
@@ -31,25 +32,47 @@ const Products = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const carouselRef = useRef(null);
 
-  // Intersection Observer for zoom-in animation
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+  // GSAP animations
+  useGSAP(() => {
+    // Header animation
+    const headerElements = headerRef.current?.children;
+    if (headerElements) {
+      gsap.set(headerElements, { opacity: 0, y: 30 });
+      
+      gsap.to(headerElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
     }
 
-    return () => observer.disconnect();
+    // Carousel animation
+    if (carouselRef.current) {
+      gsap.set(carouselRef.current, { opacity: 0, y: 40 });
+      
+      gsap.to(carouselRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: carouselRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
   }, []);
 
   // Auto-advance carousel
@@ -82,7 +105,7 @@ const Products = () => {
     <section ref={sectionRef} id="products" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'animate-zoom-in' : 'opacity-0 scale-90'}`}>
+        <div ref={headerRef} className="text-center mb-16">
           <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
             <Icon icon="solar:bag-smile-bold-duotone" />
             <span className="text-sm uppercase tracking-wider">Our Products</span>
@@ -96,7 +119,7 @@ const Products = () => {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative">
+        <div ref={carouselRef} className="relative">
           {/* Main Banner */}
           <div className="overflow-hidden">
             <div 
@@ -122,17 +145,17 @@ const Products = () => {
           {/* Navigation Arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-colors z-10"
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-colors z-10"
             aria-label="Previous product"
           >
-            <Icon icon="solar:arrow-left-linear" width="24" />
+            <Icon icon="solar:arrow-left-linear" width="18" className="md:w-6" />
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-colors z-10"
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-colors z-10"
             aria-label="Next product"
           >
-            <Icon icon="solar:arrow-right-linear" width="24" />
+            <Icon icon="solar:arrow-right-linear" width="18" className="md:w-6" />
           </button>
         </div>
 

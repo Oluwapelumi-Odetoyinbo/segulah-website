@@ -1,11 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import { useGSAP, gsap } from '../../hooks/useGSAP';
 
 const MagicBento = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const gridRef = useRef(null);
+  const rangeRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  // Intersection Observer for scroll-triggered animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -13,7 +16,7 @@ const MagicBento = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     if (sectionRef.current) {
@@ -23,6 +26,78 @@ const MagicBento = () => {
     return () => observer.disconnect();
   }, []);
 
+  const productRange = [
+    { title: 'Herbal Supplements', icon: 'solar:pill-bold-duotone' },
+    { title: 'Herbal Teas', icon: 'solar:cup-hot-bold-duotone' },
+    { title: 'Natural Skincare', icon: 'solar:magic-stick-3-bold-duotone' },
+    { title: 'Essential Oils', icon: 'solar:pipette-bold-duotone' },
+    { title: 'Detox & Cleansing Blends', icon: 'solar:leaf-bold-duotone' },
+    { title: 'Immune Support Formulas', icon: 'solar:shield-check-bold-duotone' },
+    { title: 'Mouthwash and Toothpaste', icon: 'solar:health-bold-duotone' },
+  ];
+
+  // GSAP animations
+  useGSAP(() => {
+    // Header animation
+    const headerElements = headerRef.current?.children;
+    if (headerElements) {
+      gsap.set(headerElements, { opacity: 0, y: 30 });
+      
+      gsap.to(headerElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // Grid animation with staggered images
+    const gridItems = gridRef.current?.children;
+    if (gridItems) {
+      gsap.set(gridItems, { opacity: 0, y: 50, scale: 0.95 });
+      
+      gsap.to(gridItems, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // Product Range animation
+    const rangeItems = rangeRef.current?.querySelectorAll('.range-item');
+    if (rangeItems) {
+      gsap.set(rangeItems, { opacity: 0, scale: 0.9, y: 20 });
+
+      gsap.to(rangeItems, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'back.out(1.2)',
+        scrollTrigger: {
+          trigger: rangeRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+  }, []);
+
   return (
     <section 
       ref={sectionRef}
@@ -30,10 +105,13 @@ const MagicBento = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
-        <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'animate-zoom-in' : 'opacity-0 scale-90'}`}>
+        <div 
+          ref={headerRef}
+          className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'animate-zoom-in' : 'opacity-0 scale-90'}`}
+        >
           <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
             <Icon icon="solar:bag-smile-bold-duotone" />
-            <span className="text-sm uppercase tracking-wider">Premium Products</span>
+            <span className="text-sm uppercase tracking-wider">OUR PRODUCTS</span>
           </div>
           <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 text-slate-900">
             Nature's finest wellness products
@@ -44,14 +122,14 @@ const MagicBento = () => {
         </div>
 
         {/* Bento Grid - Exact Layout from Reference */}
-        <div className={`grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-4 md:gap-5 h-[500px] md:h-[600px] transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-4 md:gap-5 h-[500px] md:h-[600px]">
           
           {/* Left Tall Image - Spans 2 rows */}
-          <div className="row-span-2">
+          <div className="row-span-2 overflow-hidden rounded-2xl md:rounded-3xl group">
             <img 
               src="/product1.png" 
               alt="Segulah Herbal Tea"
-              className="w-full h-full object-cover rounded-2xl md:rounded-3xl"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
           </div>
 
@@ -74,11 +152,11 @@ const MagicBento = () => {
           </div>
 
           {/* Right Tall Image - Spans 2 rows */}
-          <div className="row-span-2">
+          <div className="row-span-2 overflow-hidden rounded-2xl md:rounded-3xl group">
             <img 
               src="/product4.png" 
               alt="Segulah Herbal Tea"
-              className="w-full h-full object-cover rounded-2xl md:rounded-3xl"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
           </div>
 
@@ -99,25 +177,50 @@ const MagicBento = () => {
               className="w-full h-full object-cover rounded-2xl md:rounded-3xl"
             />
           </div>
-
         </div>
 
-        {/* View All Products CTA */}
-        {/* <div className={`text-center mt-12 transition-all duration-700 delay-500
-          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <a 
-            href="https://mlm-user-fe.onrender.com/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-mlm-green-600 font-semibold hover:text-mlm-green-700 transition-colors"
-          >
-            View all products in marketplace
-            <Icon icon="solar:arrow-right-linear" />
-          </a>
-        </div> */}
+        {/* Product Range Section */}
+        <div className="mt-20 pt-16 border-t border-slate-100">
+          <div className="grid lg:grid-cols-3 gap-12 items-start">
+            <div className="lg:col-span-1">
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+                Our Complete Product Range
+              </h3>
+              <p className="text-slate-500 leading-relaxed mb-6">
+                Scientifically formulated, naturally derived. Explore our diverse range of wellness solutions.
+              </p>
+              <a 
+                href="#" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-mlm-green-500 text-white font-semibold rounded-full hover:bg-mlm-green-600 transition-colors group"
+              >
+                Explore Products
+                <Icon icon="solar:arrow-right-bold" className="transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+            
+            <div ref={rangeRef} className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {productRange.map((product) => (
+                <div 
+                  key={product.title}
+                  className="range-item flex items-center gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-mlm-green-200 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-mlm-green-50 flex items-center justify-center shrink-0 group-hover:bg-mlm-green-500 transition-colors">
+                    <Icon icon={product.icon} className="text-2xl text-mlm-green-500 group-hover:text-white transition-colors" />
+                  </div>
+                  <span className="font-semibold text-slate-800 group-hover:text-slate-900 transition-colors">
+                    {product.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
 export default MagicBento;
+

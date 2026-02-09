@@ -1,108 +1,166 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Icon } from '@iconify/react';
-import CardSwap, { Card } from '../ui/CardSwap';
+import { useGSAP, gsap, ScrollTrigger } from '../../hooks/useGSAP';
+
+const aboutItems = [
+  {
+    number: '01',
+    icon: 'solar:users-group-rounded-bold',
+    iconBg: 'bg-rose-500',
+    title: 'Who We Are',
+    description: 'A herbal wellness and wealth-creation company combining traditional knowledge with modern product development.',
+  },
+  {
+    number: '02',
+    icon: 'solar:target-bold',
+    iconBg: 'bg-indigo-600',
+    title: 'Our Mission',
+    description: 'To promote natural wellness while empowering people to build sustainable income through ethical network marketing.',
+  },
+  {
+    number: '03',
+    icon: 'solar:eye-bold',
+    iconBg: 'bg-mlm-green-500',
+    title: 'Our Vision',
+    description: 'To become a world leader in herbal products and people-centered wealth creation.',
+  },
+];
 
 const About = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const cardsRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+  useGSAP(() => {
+    // Header animation
+    const headerElements = headerRef.current?.children;
+    if (headerElements) {
+      gsap.set(headerElements, { opacity: 0, y: 30 });
+      
+      gsap.to(headerElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
     }
 
-    return () => observer.disconnect();
+    // Cards animation with stagger
+    const cards = cardsRef.current?.children;
+    if (cards) {
+      gsap.set(cards, { opacity: 0, y: 60 });
+      
+      gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      // Icon pop-in effect for each card
+      Array.from(cards).forEach((card, index) => {
+        const iconBox = card.querySelector('.icon-box');
+        if (iconBox) {
+          gsap.set(iconBox, { scale: 0, rotation: -15 });
+          
+          gsap.to(iconBox, {
+            scale: 1,
+            rotation: 0,
+            duration: 0.5,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 75%',
+              toggleActions: 'play none none none',
+            },
+            delay: 0.3 + index * 0.1,
+          });
+        }
+      });
+    }
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 px-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-        {/* Text Side - Left */}
-        <div>
-          <div className={`inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
-            <Icon icon="solar:shield-star-bold-duotone" />
-            <span className="text-sm uppercase tracking-wider">Why Segulah Global</span>
-          </div>
-          <h2 className={`font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 leading-tight text-slate-900 ${isVisible ? 'animate-slide-up-delay-1' : 'opacity-0'}`}>
-            Your complete MLM<br />business toolkit.
-          </h2>
-          <p className={`text-lg text-slate-500 mb-8 leading-relaxed ${isVisible ? 'animate-slide-up-delay-2' : 'opacity-0'}`}>
-            Segulah Global gives you everything you need to build and manage a successful network marketing business. From tracking your earnings to growing your team, we've got you covered.
-          </p>
-          <ul className={`space-y-4 mb-8 ${isVisible ? 'animate-slide-up-delay-3' : 'opacity-0'}`}>
-            {[
-              'Real-time dashboard with earnings & network overview',
-              'Three wallet system: Cash, Voucher & Autoship credits',
-              'Built-in marketplace to shop with your earnings',
-              'Transparent commission structure & bonus tracking',
-            ].map((item, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <Icon icon="solar:check-circle-bold" width="20" height="20" className="mt-1 text-mlm-green-500" />
-                <span className="text-slate-600">{item}</span>
-              </li>
-            ))}
-          </ul>
-          <a href="#" className={`inline-flex items-center gap-2 font-semibold hover:gap-3 transition-all text-mlm-green-500 ${isVisible ? 'animate-slide-up-delay-4' : 'opacity-0'}`}>
-            Learn more about our platform
-            <Icon icon="solar:arrow-right-linear" />
-          </a>
-        </div>
-
-        {/* CardSwap Side - Right - Intentionally cropped at edge */}
-        <div className={`relative h-125 ${isVisible ? 'animate-slide-up-delay-2' : 'opacity-0'}`}>
-          <CardSwap
-            width={580}
-            height={440}
-            cardDistance={55}
-            verticalDistance={65}
-            delay={5000}
-            pauseOnHover={true}
-            skewAmount={5}
-            easing="elastic"
+    <section
+      ref={sectionRef}
+      className="py-24 md:py-32 bg-slate-50 relative overflow-hidden"
+      id="about"
+      aria-labelledby="about-heading"
+    >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div ref={headerRef} className="text-center mb-16 md:mb-20">
+          {/* Headline */}
+          <h2
+            id="about-heading"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900"
           >
-            {/* Dashboard UI */}
-            <Card className="shadow-2xl">
-              <img 
-                src="https://res.cloudinary.com/dokbfxcxv/image/upload/v1770206017/Screenshot_4-2-2026_125114_localhost_sftacj.jpg" 
-                alt="Segulah Dashboard"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
-              />
-            </Card>
-
-            {/* Wallet / Financial UI */}
-            <Card className="shadow-2xl">
-              <img 
-                src="https://res.cloudinary.com/dokbfxcxv/image/upload/v1770206017/Screenshot_4-2-2026_125031_localhost_k7ixto.jpg" 
-                alt="Segulah Wallet System"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
-              />
-            </Card>
-
-            {/* Network / Analytics UI */}
-            <Card className="shadow-2xl">
-              <img 
-                src="https://res.cloudinary.com/dokbfxcxv/image/upload/v1770126599/Screenshot_3-2-2026_14388_localhost_eahxpy.jpg" 
-                alt="Segulah Network Analytics"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
-              />
-            </Card>
-          </CardSwap>
+            About Us
+          </h2>
         </div>
+
+        {/* Cards - Staggered Layout */}
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_1fr] gap-6 md:gap-8 items-start">
+          {aboutItems.map((item, index) => {
+            const isMiddle = index === 1;
+            return (
+              <div
+                key={item.number}
+                className="relative"
+                style={{
+                  marginTop: isMiddle ? '5rem' : '2rem',
+                }}
+              >
+                {/* Card */}
+                <div className={`${isMiddle ? 'p-8 md:p-10 min-w-[280px]' : 'p-6 md:p-8 min-w-[240px]'}`}>
+                  {/* Top Row - Icon & Number */}
+                  <div className="flex items-start justify-between mb-6">
+                    {/* Icon Box */}
+                    <div className={`icon-box ${isMiddle ? 'w-16 h-16 md:w-20 md:h-20' : 'w-14 h-14'} rounded-xl ${item.iconBg} flex items-center justify-center shadow-lg`}>
+                      <Icon
+                        icon={item.icon}
+                        className={`${isMiddle ? 'w-8 h-8 md:w-10 md:h-10' : 'w-7 h-7'} text-white`}
+                      />
+                    </div>
+                    
+                    {/* Number */}
+                    <span className={`text-slate-300 font-semibold ${isMiddle ? 'text-xl md:text-2xl' : 'text-lg'}`}>
+                      {item.number}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className={`font-bold text-slate-900 mb-3 ${isMiddle ? 'text-2xl md:text-3xl' : 'text-xl'}`}>
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className={`text-slate-500 leading-relaxed ${isMiddle ? 'text-base md:text-lg' : 'text-sm md:text-base'}`}>
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
+
       </div>
     </section>
   );
 };
 
 export default About;
+

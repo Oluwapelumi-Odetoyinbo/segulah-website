@@ -1,6 +1,12 @@
+import { useRef, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import { useGSAP, gsap } from '../../hooks/useGSAP';
 
 const Testimonials = () => {
+  const headerRef = useRef(null);
+  const marqueeRef = useRef(null);
+  const marqueeAnimationRef = useRef(null);
+
   const testimonials = [
     {
       name: 'Adaeze Okwu',
@@ -58,11 +64,61 @@ const Testimonials = () => {
     },
   ];
 
+  useGSAP(() => {
+    // Header animation
+    const headerElements = headerRef.current?.children;
+    if (headerElements) {
+      gsap.set(headerElements, { opacity: 0, y: 30 });
+      
+      gsap.to(headerElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    // GSAP marquee animation
+    const marqueeInner = marqueeRef.current;
+    if (marqueeInner) {
+      const totalWidth = marqueeInner.scrollWidth / 2;
+      
+      marqueeAnimationRef.current = gsap.to(marqueeInner, {
+        x: -totalWidth,
+        duration: 40,
+        ease: 'none',
+        repeat: -1,
+        modifiers: {
+          x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
+        }
+      });
+    }
+  }, []);
+
+  // Pause/resume on hover
+  const handleMouseEnter = () => {
+    if (marqueeAnimationRef.current) {
+      gsap.to(marqueeAnimationRef.current, { timeScale: 0, duration: 0.3 });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (marqueeAnimationRef.current) {
+      gsap.to(marqueeAnimationRef.current, { timeScale: 1, duration: 0.3 });
+    }
+  };
+
   return (
     <section id="testimonials" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div ref={headerRef} className="text-center mb-16">
           <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
             <Icon icon="solar:chat-square-like-bold-duotone" />
             <span className="text-sm uppercase tracking-wider">Success Stories</span>
@@ -71,14 +127,18 @@ const Testimonials = () => {
             Real members, real results
           </h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-            Join thousands of Nigerians who are building wealth through Segulah Global.
+            Join thousands who are building wealth through Segulah Global.
           </p>
         </div>
       </div>
 
       {/* Testimonials Marquee (full width) */}
-      <div className="relative overflow-hidden w-screen left-1/2 right-1/2 -mx-[50vw]">
-        <div className="flex gap-8 animate-testimonials-marquee">
+      <div 
+        className="relative overflow-hidden w-screen left-1/2 right-1/2 -mx-[50vw]"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div ref={marqueeRef} className="flex gap-8">
           {[...testimonials, ...testimonials].map((testimonial, index) => (
             <div
               key={`${testimonial.name}-${index}`}
@@ -115,34 +175,10 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
-        <style>{`
-          @keyframes testimonials-marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          .animate-testimonials-marquee {
-            animation: testimonials-marquee 40s linear infinite;
-          }
-        `}</style>
       </div>
-
-      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 p-8 bg-mlm-green-500 rounded-2xl text-white">
-          {[
-            { value: '10,000+', label: 'Active Members' },
-            { value: '₦50M+', label: 'Paid Out Monthly' },
-            { value: '36', label: 'States Covered' },
-            { value: '4.9/5', label: 'Member Rating' },
-          ].map((stat, index) => (
-            <div key={index} className="text-center">
-              <p className="text-3xl md:text-4xl font-bold mb-1">{stat.value}</p>
-              <p className="text-mlm-green-100 text-sm">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </section>
   );
 };
 
 export default Testimonials;
+

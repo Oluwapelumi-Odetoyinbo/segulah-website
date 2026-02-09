@@ -11,6 +11,10 @@ import {
   HowItWorks,
   Testimonials,
   FAQ,
+  ValueProposition,
+  Contact,
+  CoreValues,
+  AboutNew,
 } from './components/sections';
 
 function App() {
@@ -25,14 +29,20 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <ValueProposition />
         <SocialProof />
-        <MagicBento />
         <About />
+        <div className="hidden md:block">
+          <AboutNew />
+        </div>
+        <CoreValues />
+        <MagicBento />
         <Features />
+        <HowItWorks />
         <Products />
         <Pricing />
-        <HowItWorks />
         <Testimonials />
+        <Contact />
         <FAQ />
       </main>
       <Footer />
