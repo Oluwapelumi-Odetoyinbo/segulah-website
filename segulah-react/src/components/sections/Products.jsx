@@ -42,7 +42,7 @@ const Products = () => {
     const headerElements = headerRef.current?.children;
     if (headerElements) {
       gsap.set(headerElements, { opacity: 0, y: 30 });
-      
+
       gsap.to(headerElements, {
         opacity: 1,
         y: 0,
@@ -60,7 +60,7 @@ const Products = () => {
     // Carousel animation
     if (carouselRef.current) {
       gsap.set(carouselRef.current, { opacity: 0, y: 40 });
-      
+
       gsap.to(carouselRef.current, {
         opacity: 1,
         y: 0,
@@ -78,7 +78,7 @@ const Products = () => {
   // Auto-advance carousel
   useEffect(() => {
     if (!isAutoPlaying) return;
-    
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % products.length);
     }, 5000);
@@ -103,82 +103,111 @@ const Products = () => {
 
   return (
     <section ref={sectionRef} id="products" className="py-24 bg-slate-50">
+      {/* Section Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div ref={headerRef} className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 font-semibold mb-4 text-mlm-green-500">
-            <Icon icon="solar:bag-smile-bold-duotone" />
-            <span className="text-sm uppercase tracking-wider">Our Products</span>
+          {/* Company Name - Primary Focus */}
+          <div className="mb-8">
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-2">
+              <span className="text-mlm-green-500">SEGULAH GLOBAL</span>
+              <span className="block text-slate-900 text-2xl md:text-4xl lg:text-5xl mt-2">
+                Premium Solutions Ltd
+              </span>
+            </h1>
           </div>
-          <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-6 text-slate-900">
-            Quality products you can trust
-          </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-            Explore our range of premium products available exclusively to Segulah Global members.
-          </p>
-        </div>
 
-        {/* Carousel Container */}
-        <div ref={carouselRef} className="relative">
-          {/* Main Banner */}
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-700 ease-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {products.map((product, index) => (
-                <div 
-                  key={product.id}
-                  className="w-full shrink-0"
-                >
-                  {/* Product Image */}
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full rounded-4xl h-auto object-cover"
-                  />
-                </div>
-              ))}
+          {/* Decorative Divider */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-16 h-[2px] bg-linear-to-r from-transparent to-mlm-green-500/40" />
+            <div className="w-3 h-3 rounded-full bg-mlm-green-500/60" />
+            <div className="w-16 h-[2px] bg-linear-to-l from-transparent to-mlm-green-500/40" />
+          </div>
+
+          {/* Value Proposition - What You Do */}
+          <div className="max-w-3xl mx-auto space-y-4">
+            <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-slate-800 leading-relaxed">
+              Transforming Lives Through Natural Wellness &
+              <span className="text-mlm-green-600"> Financial Empowerment</span>
+            </p>
+          </div>
+
+          {/* Optional: Trust Indicators */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-mlm-green-500" />
+              <span>100% Natural Products</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-mlm-green-500" />
+              <span>Proven Business Model</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-mlm-green-500" />
+              <span>Growing Community</span>
             </div>
           </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={goToPrevious}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-colors z-10"
-            aria-label="Previous product"
-          >
-            <Icon icon="solar:arrow-left-linear" width="18" className="md:w-6" />
-          </button>
-          <button
-            onClick={goToNext}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:text-mlm-green-500 hover:border-mlm-green-200 transition-colors z-10"
-            aria-label="Next product"
-          >
-            <Icon icon="solar:arrow-right-linear" width="18" className="md:w-6" />
-          </button>
+        </div>
+      </div>
+      {/* Full Width Carousel */}
+      <div
+        ref={carouselRef}
+        className="relative w-screen left-1/2 -translate-x-1/2 h-[300px] sm:h-[400px] md:h-[600px]"
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          {products.map((product, index) => (
+            <div
+              key={product.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                }`}
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+              {/* Optional: Add a subtle overlay to ensure text readability if needed later, 
+                  or just for aesthetic consistency */}
+              <div className="absolute inset-0 bg-black/10" />
+            </div>
+          ))}
         </div>
 
-        {/* Dot Indicators */}
+        {/* Navigation Arrows */}
+        {/* <button
+          onClick={goToPrevious}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-white/20 flex items-center justify-center text-slate-700 hover:text-mlm-green-500 hover:bg-white transition-all z-10"
+          aria-label="Previous product"
+        >
+          <Icon icon="solar:arrow-left-linear" width="20" />
+        </button>
+        <button
+          onClick={goToNext}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-white/20 flex items-center justify-center text-slate-700 hover:text-mlm-green-500 hover:bg-white transition-all z-10"
+          aria-label="Next product"
+        >
+          <Icon icon="solar:arrow-right-linear" width="20" />
+        </button> */}
+      </div>
+
+      {/* Dot Indicators & Progress */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center gap-2 mt-8">
           {products.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'bg-mlm-green-500 w-8' 
-                  : 'bg-slate-300 hover:bg-slate-400'
-              }`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex
+                ? 'bg-mlm-green-500 w-8'
+                : 'bg-slate-300 hover:bg-slate-400'
+                }`}
               aria-label={`Go to product ${index + 1}`}
             />
           ))}
         </div>
 
-        {/* Progress bar */}
         <div className="max-w-md mx-auto mt-4">
           <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full bg-mlm-green-500 transition-all duration-300"
               style={{ width: `${((currentIndex + 1) / products.length) * 100}%` }}
             ></div>

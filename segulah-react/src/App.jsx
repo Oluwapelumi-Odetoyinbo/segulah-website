@@ -1,21 +1,9 @@
 import { useState } from 'react';
-import { Navbar, Footer, LoadingScreen } from './components/layout';
-import {
-  Hero,
-  SocialProof,
-  About,
-  Features,
-  Products,
-  MagicBento,
-  Pricing,
-  HowItWorks,
-  Testimonials,
-  FAQ,
-  ValueProposition,
-  Contact,
-  CoreValues,
-  AboutNew,
-} from './components/sections';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { LoadingScreen } from './components/layout';
+import Landing from './pages/Landing';
+import Product from './pages/Product';
+import ProductDetails from './pages/ProductDetails';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,28 +13,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main>
-        <Hero />
-        <ValueProposition />
-        <SocialProof />
-        <About />
-        <div className="hidden md:block">
-          <AboutNew />
-        </div>
-        <CoreValues />
-        <MagicBento />
-        <Features />
-        <HowItWorks />
-        <Products />
-        <Pricing />
-        <Testimonials />
-        <Contact />
-        <FAQ />
-      </main>
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
