@@ -196,7 +196,7 @@ const Product = () => {
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedPromotions, setSelectedPromotions] = useState([]);
   const [selectedAvailability, setSelectedAvailability] = useState([]);
-  
+
   // Cart State
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('segulah-cart');
@@ -229,7 +229,7 @@ const Product = () => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
       if (existingItem) {
-        return prevCart.map(item => 
+        return prevCart.map(item =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
@@ -262,7 +262,7 @@ const Product = () => {
       const priceMatch = product.price <= maxPrice;
       const ratingMatch = selectedRating === null || Math.floor(product.rating) >= selectedRating;
       const promotionMatch = selectedPromotions.length === 0 || selectedPromotions.includes(product.promotion);
-      
+
       let availabilityMatch = true;
       if (selectedAvailability.length > 0) {
         if (selectedAvailability.includes('In Stock') && selectedAvailability.includes('Out of Stocks')) {
@@ -306,11 +306,11 @@ const Product = () => {
       <Navbar />
 
       {/* Cart Drawer */}
-      <div 
-        className={`fixed inset-0 z-[60] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      <div
+        className={`fixed inset-0 z-60 transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       >
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
-        <div 
+        <div
           className={`absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transition-transform duration-500 transform ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}
         >
           <div className="flex flex-col h-full">
@@ -332,7 +332,7 @@ const Product = () => {
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-1">Your cart is empty</h3>
                   <p className="text-slate-500 text-sm mb-6">Looks like you haven't added anything yet.</p>
-                  <button 
+                  <button
                     onClick={() => setIsCartOpen(false)}
                     className="px-6 py-2 bg-mlm-green-500 text-white rounded-full text-sm font-medium hover:bg-mlm-green-600 transition-colors"
                   >
@@ -355,14 +355,14 @@ const Product = () => {
                       <p className="text-sm text-slate-500 mb-3">₦{item.price.toLocaleString()}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center border border-slate-200 rounded-full p-1 bg-white">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-600 transition-colors"
                           >
                             <Icon icon="lucide:minus" className="w-3.5 h-3.5" />
                           </button>
                           <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-600 transition-colors"
                           >
@@ -383,7 +383,13 @@ const Product = () => {
                   <span className="text-slate-500 font-medium">Subtotal</span>
                   <span className="text-2xl font-bold text-slate-900">₦{cartTotal.toLocaleString()}</span>
                 </div>
-                <button className="w-full py-4 bg-mlm-green-500 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-mlm-green-600 transition-all shadow-xl shadow-mlm-green-500/20 active:scale-[0.98]">
+                <button
+                  onClick={() => {
+                    setIsCartOpen(false);
+                    navigate('/checkout');
+                  }}
+                  className="w-full py-4 bg-mlm-green-500 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-mlm-green-600 transition-all shadow-xl shadow-mlm-green-500/20 active:scale-[0.98]"
+                >
                   <Icon icon="solar:wallet-money-bold" className="w-5 h-5" />
                   Proceed to Checkout
                 </button>
@@ -397,16 +403,16 @@ const Product = () => {
       <header className="relative h-[300px] flex items-center justify-center overflow-hidden">
         {/* Background Image Banner */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://media.istockphoto.com/id/1418267688/photo/aerial-top-down-view-of-a-large-container-cargo-ship-with-copy-space.webp?a=1&b=1&s=612x612&w=0&k=20&c=yXzWMw68-mvyR5Nz82hXKZBlgRbuNwN1uuN5r7whL8E=" 
-            alt="Shop Banner" 
+          <img
+            src="https://media.istockphoto.com/id/1418267688/photo/aerial-top-down-view-of-a-large-container-cargo-ship-with-copy-space.webp?a=1&b=1&s=612x612&w=0&k=20&c=yXzWMw68-mvyR5Nz82hXKZBlgRbuNwN1uuN5r7whL8E="
+            alt="Shop Banner"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"></div>
         </div>
 
         {/* Cart Trigger */}
-        <button 
+        <button
           onClick={() => setIsCartOpen(true)}
           className="absolute right-6 top-6 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-white/20 flex items-center justify-center text-slate-900 hover:text-mlm-green-500 transition-all hover:scale-110 z-20 group"
         >
@@ -421,7 +427,7 @@ const Product = () => {
         <div className="relative z-10 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-white mb-3 drop-shadow-md">Products catalog</h1>
           <nav className="flex justify-center items-center gap-3 text-sm font-medium text-white/90">
-            <span className="hover:text-mlm-green-400 cursor-pointer transition-colors" onClick={() => window.location.href='/'}>Home</span>
+            <span className="hover:text-mlm-green-400 cursor-pointer transition-colors" onClick={() => window.location.href = '/'}>Home</span>
             <Icon icon="lucide:chevron-right" className="w-4 h-4 text-white/60" />
             <span className="text-white">Products catalog</span>
           </nav>
@@ -437,8 +443,8 @@ const Product = () => {
               <h3 className="text-sm font-semibold text-[#111827] mb-4">By Categories</h3>
               <ul className="space-y-3">
                 {['Skin Care', 'Makeup', 'Hair Care', 'Fragrances', 'Nail Care', 'Body Care', 'Wellness'].map((item) => (
-                  <li 
-                    key={item} 
+                  <li
+                    key={item}
                     className="flex items-center gap-3 group cursor-pointer"
                     onClick={() => toggleFilter(item, selectedCategories, setSelectedCategories)}
                   >
@@ -454,7 +460,7 @@ const Product = () => {
             <div className="pt-4 border-t border-gray-100">
               <h3 className="text-sm font-semibold text-[#111827] mb-4">Price (Up to ₦{maxPrice.toLocaleString()})</h3>
               <div className="px-1">
-                <input 
+                <input
                   type="range"
                   min="5000"
                   max="100000"
@@ -474,8 +480,8 @@ const Product = () => {
               <h3 className="text-sm font-semibold text-[#111827] mb-4">Review</h3>
               <ul className="space-y-3">
                 {[5, 4, 3, 2, 1].map((stars) => (
-                  <li 
-                    key={stars} 
+                  <li
+                    key={stars}
                     className="flex items-center gap-3 cursor-pointer group"
                     onClick={() => setSelectedRating(selectedRating === stars ? null : stars)}
                   >
@@ -499,8 +505,8 @@ const Product = () => {
               <h3 className="text-sm font-semibold text-[#111827] mb-4">By Promotions</h3>
               <ul className="space-y-3">
                 {['New Arrivals', 'Best Sellers', 'On Sale'].map((promo) => (
-                  <li 
-                    key={promo} 
+                  <li
+                    key={promo}
                     className="flex items-center gap-3 cursor-pointer group"
                     onClick={() => toggleFilter(promo, selectedPromotions, setSelectedPromotions)}
                   >
@@ -517,8 +523,8 @@ const Product = () => {
               <h3 className="text-sm font-semibold text-[#111827] mb-4">Availability</h3>
               <ul className="space-y-3">
                 {['In Stock', 'Out of Stocks'].map((status) => (
-                  <li 
-                    key={status} 
+                  <li
+                    key={status}
                     className="flex items-center gap-3 cursor-pointer group"
                     onClick={() => toggleFilter(status, selectedAvailability, setSelectedAvailability)}
                   >
@@ -550,9 +556,9 @@ const Product = () => {
                 {activeFilters.map((filter, index) => (
                   <div key={`${filter.type}-${index}`} className="flex items-center gap-2 px-3 py-1.5 bg-mlm-green-500 text-white rounded-full text-sm font-medium">
                     <span>{filter.label}</span>
-                    <Icon 
-                      icon="lucide:x" 
-                      className="w-3 h-3 cursor-pointer hover:scale-120 transition-transform" 
+                    <Icon
+                      icon="lucide:x"
+                      className="w-3 h-3 cursor-pointer hover:scale-120 transition-transform"
                       onClick={() => removeFilter(filter)}
                     />
                   </div>
@@ -569,7 +575,7 @@ const Product = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-12">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="group">
-                  <div className="relative aspect-[4/5] bg-gray-100 rounded-2xl overflow-hidden mb-5">
+                  <div className="relative aspect-4/5 bg-gray-100 rounded-2xl overflow-hidden mb-5">
                     <img
                       src={product.image}
                       alt={product.title}
@@ -598,8 +604,8 @@ const Product = () => {
                     {/* Add to Cart Overlay Button */}
                     {product.inStock && (
                       <div className="absolute inset-x-4 bottom-4 transition-all duration-300">
-                        <button 
-                          onClick={() => addToCart(product)}
+                        <button
+                          onClick={() => navigate(`/product/${product.id}`)}
                           className="w-full py-2.5 bg-white/90 backdrop-blur-sm text-slate-900 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-mlm-green-500 hover:text-white transition-colors shadow-lg active:scale-95"
                         >
                           <Icon icon="solar:cart-plus-bold" className="w-5 h-5" />
@@ -633,7 +639,7 @@ const Product = () => {
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
                   <p className="text-gray-500">Try adjusting your filters to find what you're looking for.</p>
-                  <button 
+                  <button
                     onClick={clearAllFilters}
                     className="mt-6 px-6 py-2 bg-mlm-green-500 text-white rounded-full text-sm font-medium hover:bg-mlm-green-600 transition-colors"
                   >

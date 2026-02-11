@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { Navbar, Footer } from '../components/layout';
 import { INITIAL_PRODUCTS } from './Product';
 
 const ProductDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const product = INITIAL_PRODUCTS.find((p) => p.id === id);
 
@@ -48,15 +49,17 @@ const ProductDetails = () => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
       if (existingItem) {
-        return prevCart.map(item => 
+        return prevCart.map(item =>
           item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
       return [...prevCart, { ...product, quantity }];
     });
-    setToast({ show: true, message: `${product.title} added to cart!` });
+
     if (buyNow) {
       setIsCartOpen(true);
+    } else {
+      setToast({ show: true, message: `${product.title} added to cart!` });
     }
   };
 
@@ -98,8 +101,8 @@ const ProductDetails = () => {
             <Icon icon="solar:check-circle-bold" className="w-5 h-5 text-mlm-green-500" />
           </div>
           <p className="text-sm font-semibold text-gray-900 whitespace-nowrap">{toast.message}</p>
-          <button 
-            onClick={() => { setToast({ show: false, message: '' }); setIsCartOpen(true); }} 
+          <button
+            onClick={() => { setToast({ show: false, message: '' }); setIsCartOpen(true); }}
             className="ml-2 px-4 py-1.5 bg-mlm-green-500 text-white text-xs font-bold rounded-full hover:bg-mlm-green-600 transition-colors whitespace-nowrap"
           >
             View Cart
@@ -111,11 +114,11 @@ const ProductDetails = () => {
       </div>
 
       {/* Cart Drawer (Reused from Product.jsx for consistency) */}
-      <div 
-        className={`fixed inset-0 z-[60] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      <div
+        className={`fixed inset-0 z-60 transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       >
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
-        <div 
+        <div
           className={`absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transition-transform duration-500 transform ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}
         >
           <div className="flex flex-col h-full">
@@ -137,7 +140,7 @@ const ProductDetails = () => {
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-1">Your cart is empty</h3>
                   <p className="text-slate-500 text-sm mb-6">Looks like you haven't added anything yet.</p>
-                  <button 
+                  <button
                     onClick={() => setIsCartOpen(false)}
                     className="px-6 py-2 bg-mlm-green-500 text-white rounded-full text-sm font-medium hover:bg-mlm-green-600 transition-colors"
                   >
@@ -160,14 +163,14 @@ const ProductDetails = () => {
                       <p className="text-sm text-slate-500 mb-3">₦{item.price.toLocaleString()}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center border border-slate-200 rounded-full p-1 bg-white">
-                          <button 
+                          <button
                             onClick={() => updateCartQuantity(item.id, -1)}
                             className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-600 transition-colors"
                           >
                             <Icon icon="lucide:minus" className="w-3.5 h-3.5" />
                           </button>
                           <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateCartQuantity(item.id, 1)}
                             className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-50 text-slate-600 transition-colors"
                           >
@@ -188,7 +191,13 @@ const ProductDetails = () => {
                   <span className="text-slate-500 font-medium">Subtotal</span>
                   <span className="text-2xl font-bold text-slate-900">₦{cartTotal.toLocaleString()}</span>
                 </div>
-                <button className="w-full py-4 bg-mlm-green-500 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-mlm-green-600 transition-all shadow-xl shadow-mlm-green-500/20 active:scale-[0.98]">
+                <button
+                  onClick={() => {
+                    setIsCartOpen(false);
+                    navigate('/checkout');
+                  }}
+                  className="w-full py-4 bg-mlm-green-500 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-mlm-green-600 transition-all shadow-xl shadow-mlm-green-500/20 active:scale-[0.98]"
+                >
                   <Icon icon="solar:wallet-money-bold" className="w-5 h-5" />
                   Proceed to Checkout
                 </button>
@@ -213,9 +222,9 @@ const ProductDetails = () => {
           {/* Left: Image Gallery */}
           <div className="space-y-6">
             <div className="relative bg-slate-50 rounded-3xl overflow-hidden aspect-square group shadow-sm">
-              <img 
-                src={activeImage} 
-                alt={product.title} 
+              <img
+                src={activeImage}
+                alt={product.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute top-4 left-4 bg-mlm-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
@@ -225,7 +234,7 @@ const ProductDetails = () => {
 
             <div className="grid grid-cols-4 gap-4">
               {thumbnails.map((img, index) => (
-                <button 
+                <button
                   key={index}
                   onClick={() => setActiveImage(img)}
                   className={`aspect-square rounded-2xl overflow-hidden border-2 transition-all ${activeImage === img ? 'border-mlm-green-500 ring-2 ring-mlm-green-500/20' : 'border-transparent hover:border-gray-200'}`}
@@ -255,10 +264,10 @@ const ProductDetails = () => {
             <div className="flex items-center gap-2 mb-6">
               <div className="flex text-yellow-400">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <Icon 
-                    key={i} 
-                    icon="solar:star-bold" 
-                    className={`w-4 h-4 ${i <= Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-200'}`} 
+                  <Icon
+                    key={i}
+                    icon="solar:star-bold"
+                    className={`w-4 h-4 ${i <= Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-200'}`}
                   />
                 ))}
               </div>
@@ -281,19 +290,19 @@ const ProductDetails = () => {
             <div className="flex flex-wrap items-center gap-3 mb-8 pb-8 border-b border-gray-100">
               {/* Counter */}
               <div className="flex items-center border border-gray-200 rounded-xl px-2 h-11 bg-slate-50/50">
-                <button 
+                <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-white rounded-xl transition-all"
                 >
                   <Icon icon="lucide:minus" className="w-4 h-4" />
                 </button>
-                <input 
-                  type="number" 
-                  value={quantity} 
+                <input
+                  type="number"
+                  value={quantity}
                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                   className="w-10 text-center text-sm text-gray-900 font-bold focus:outline-none bg-transparent"
                 />
-                <button 
+                <button
                   onClick={() => setQuantity(quantity + 1)}
                   className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-white rounded-xl transition-all"
                 >
@@ -302,21 +311,21 @@ const ProductDetails = () => {
               </div>
 
               {/* Buttons */}
-              <button 
+              <button
                 onClick={() => addToCart(false)}
                 className="flex-[1.5] bg-slate-900 text-white h-11 whitespace-nowrap px-6 rounded-xl text-sm font-bold hover:bg-black transition-all shadow-sm active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 <Icon icon="solar:cart-plus-bold" className="w-5 h-5" />
                 Add To Cart
               </button>
-              <button 
+              <button
                 onClick={() => addToCart(true)}
                 className="flex-1 bg-mlm-green-500 text-white h-11 px-6 rounded-xl text-sm font-bold hover:bg-mlm-green-600 active:scale-[0.98]"
               >
                 Buy Now
               </button>
-              
-             
+
+
             </div>
 
             {/* Meta */}
@@ -329,7 +338,7 @@ const ProductDetails = () => {
                 <span className="w-24 text-gray-900 font-bold uppercase tracking-tighter">Tags:</span>
                 <span className="text-gray-500 font-medium">{product.category}, {product.skinType} Skin, Organic, Segulah</span>
               </div>
-             
+
             </div>
           </div>
         </div>
@@ -338,7 +347,7 @@ const ProductDetails = () => {
         <div className="mt-16 border-b border-gray-100">
           <div className="flex justify-center gap-10">
             {['Description', 'Review'].map((tab) => (
-              <button 
+              <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`pb-3 text-sm font-semibold transition-all relative ${activeTab === tab ? 'text-mlm-green-500' : 'text-gray-400 hover:text-gray-600'}`}
@@ -441,7 +450,7 @@ const ProductDetails = () => {
                         <p className="text-sm text-gray-500 leading-relaxed font-normal mb-6">
                           "I've tried many different brands, but Segulah's approach to {product.category.toLowerCase()} is fundamentally different. This product has completely transformed my skin's texture and radiance in just two weeks. Well worth the price!"
                         </p>
-                        
+
                         <div className="flex gap-4">
                           <div className="w-20 h-20 rounded-2xl overflow-hidden bg-slate-50 relative group/img cursor-pointer border border-slate-100">
                             <img src={product.image} className="w-full h-full object-cover opacity-60 group-hover/img:opacity-100 transition-all" alt="Review Image" />

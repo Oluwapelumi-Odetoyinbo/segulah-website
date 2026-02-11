@@ -4,6 +4,9 @@ import { LoadingScreen } from './components/layout';
 import Landing from './pages/Landing';
 import Product from './pages/Product';
 import ProductDetails from './pages/ProductDetails';
+import Checkout from './pages/Checkout';
+
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,10 +17,12 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/product" element={<Product />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </BrowserRouter>
   );

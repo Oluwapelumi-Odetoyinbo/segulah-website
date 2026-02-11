@@ -17,10 +17,10 @@ import {
 import { Navbar, Footer } from '../components/layout';
 
 const Landing = () => (
-  <div className="min-h-screen overflow-x-hidden">
+  <div className="min-h-screen">
     <Navbar />
-    <main>
-     <Products />
+    <main className="overflow-x-hidden">
+      <Products />
       <ValueProposition />
       <SocialProof />
       <About />
@@ -31,7 +31,7 @@ const Landing = () => (
       <MagicBento />
       <Features />
       <HowItWorks />
-       <Hero />
+      <Hero />
       <Pricing />
       <Testimonials />
       <Contact />
