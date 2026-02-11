@@ -31,6 +31,15 @@ const MagicBento = () => {
     });
   }, [api]);
 
+  // Auto-play: loop slowly to next slide every 4 seconds
+  useEffect(() => {
+    if (!api) return;
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [api]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -123,7 +132,7 @@ const MagicBento = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-linear-to-b from-slate-50 via-white to-slate-50 overflow-hidden"
+      className="py-24 bg-linear-to-b from-slate-50 via-white to-slate-50 overflow-x-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
@@ -201,8 +210,8 @@ const MagicBento = () => {
           </div>
         </div>
 
-        {/* Product Range Carousel */}
-        <div className="mt-20 pt-16 border-t border-slate-100">
+        {/* Product Range Carousel header */}
+        <div className="mt-20 pt-16 border-t border-slate-100" ref={rangeRef}>
           <div className="text-center mb-12">
             <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
               Our Complete Product Range
@@ -211,23 +220,23 @@ const MagicBento = () => {
               Scientifically formulated, naturally derived. Explore our diverse range of wellness solutions.
             </p>
           </div>
+        </div>
+      </div>
 
-          <div className="relative w-full max-w-7xl mx-auto px-4 flex justify-center">
-            <div className="w-full max-w-[720px]">
-              <Carousel setApi={setApi} opts={{ align: 'start', loop: false }}>
-                <CarouselContent className="-ml-4">
-                  {productRange.map((p) => (
-                    <CarouselItem key={p.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+      {/* Full-width carousel - outside max-w container */}
+      <div className="relative w-screen left-1/2 -translate-x-1/2 pl-4 sm:pl-6 md:pl-8 pr-4 sm:pr-6 md:pr-8 -mt-4">
+        <Carousel setApi={setApi} opts={{ align: 'start', loop: true, duration: 35 }}>
+              <CarouselContent className="-ml-4">
+                {productRange.map((p) => (
+                  <CarouselItem key={p.id} className="pl-4 basis-[85%] sm:basis-[45%] md:basis-[35%] lg:basis-[28%]">
                       <div
-                        className="flex flex-col items-start justify-between bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group cursor-pointer h-[340px]"
+                        className="flex flex-col bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group cursor-pointer h-[340px]"
                         onClick={() => navigate('/product', { state: { category: p.title } })}
                       >
-                        <div className="mb-4 p-5 w-full">
-                          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white overflow-hidden ring-1 ring-slate-200">
-                            <img src={p.image} alt="" className="h-full w-full object-cover" />
-                          </span>
+                        <div className="flex-1 min-h-0 relative w-full overflow-hidden">
+                          <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         </div>
-                        <div className="p-5 w-full">
+                        <div className="p-5 flex-shrink-0">
                           <div className="mb-1 font-black text-lg text-slate-900">{p.title}</div>
                           <p className="text-sm text-slate-600">{p.category}</p>
                           <button
@@ -244,26 +253,11 @@ const MagicBento = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-              <div className="text-slate-500 py-2 text-center text-sm">
-                Slide {current} of {count}
-              </div>
-            </div>
-          </div>
-
-          {/* <div className="flex justify-center mt-10">
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-mlm-green-500 text-white font-semibold rounded-full hover:bg-mlm-green-600 transition-colors group shadow-lg shadow-mlm-green-500/25"
-            >
-              Explore Full Catalog
-              <Icon icon="solar:arrow-right-bold" className="transition-transform group-hover:translate-x-1" />
-            </a>
-          </div> */}
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+        <div className="text-slate-500 py-2 text-center text-sm mt-4">
+          Slide {current} of {count}
         </div>
       </div>
     </section>

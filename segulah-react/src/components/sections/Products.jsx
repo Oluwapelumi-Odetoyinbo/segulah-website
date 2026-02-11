@@ -52,7 +52,7 @@ const Products = () => {
     <section ref={sectionRef} id="products" className="overflow-hidden">
       <div
         ref={carouselRef}
-        className="relative w-screen left-1/2 -translate-x-1/2 aspect-1920/700 min-h-[180px] sm:min-h-[220px]"
+        className="relative w-screen left-1/2 -translate-x-1/2 aspect-[1920/700] min-h-[180px] sm:min-h-[220px]"
       >
         <div className="absolute inset-0 overflow-hidden">
           {products.map((product, index) => (
@@ -66,6 +66,43 @@ const Products = () => {
                 className="w-full h-full object-cover object-center"
               />
             </div>
+          ))}
+        </div>
+
+        {/* Left arrow */}
+        <button
+          type="button"
+          onClick={() => setCurrentIndex((prev) => (prev - 1 + products.length) % products.length)}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white text-gray-800 transition-colors"
+          aria-label="Previous slide"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        {/* Right arrow */}
+        <button
+          type="button"
+          onClick={() => setCurrentIndex((prev) => (prev + 1) % products.length)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 hover:bg-white text-gray-800 transition-colors"
+          aria-label="Next slide"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+
+        {/* Dot indicators - bottom center */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {products.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-all ${index === currentIndex ? 'bg-white scale-125' : 'bg-white/60 hover:bg-white/80'}`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
           ))}
         </div>
       </div>
