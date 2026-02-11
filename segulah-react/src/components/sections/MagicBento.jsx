@@ -1,14 +1,35 @@
 import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useGSAP, gsap } from '../../hooks/useGSAP';
 import { InfiniteMovingCards } from '../ui/InfiniteMovingCards';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '../ui/Carousel';
 
 const MagicBento = () => {
+  const navigate = useNavigate();
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const gridRef = useRef(null);
   const rangeRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [api, setApi] = useState(null);
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,13 +49,13 @@ const MagicBento = () => {
   }, []);
 
   const productRange = [
-    { title: 'Herbal Supplements', icon: 'solar:pill-bold-duotone', image: '/product1.png', description: 'Potent natural extracts for daily vitality and health.' },
-    { title: 'Herbal Teas', icon: 'solar:cup-hot-bold-duotone', image: '/product4.png', description: 'Soothing blends to detoxify and energize your body.' },
-    { title: 'Natural Skincare', icon: 'solar:magic-stick-3-bold-duotone', image: '/product7.png', description: 'Radiant glow with organic, skin-loving ingredients.' },
-    { title: 'Essential Oils', icon: 'solar:pipette-bold-duotone', image: '/product3.png', description: 'Pure aromatic essence for therapeutic wellness.' },
-    { title: 'Detox & Cleansing', icon: 'solar:leaf-bold-duotone', image: '/product2.png', description: 'Gentle yet effective system for deep body cleansing.' },
-    { title: 'Immune Support', icon: 'solar:shield-check-bold-duotone', image: '/product6.png', description: 'Fortify your defenses with nature’s best guardians.' },
-    { title: 'Oral Care', icon: 'solar:health-bold-duotone', image: '/product5.png', description: 'Natural freshness and protection for a healthy smile.' },
+    { id: 'cat1', title: 'Herbal Supplements', category: 'Wellness', price: 15000, rating: 4.9, image: '/product1.png' },
+    { id: 'cat2', title: 'Herbal Teas', category: 'Wellness', price: 12000, rating: 4.8, image: '/product4.png' },
+    { id: 'cat3', title: 'Natural Skincare', category: 'Skin Care', price: 25000, rating: 5.0, image: '/product7.png' },
+    { id: 'cat4', title: 'Essential Oils', category: 'Wellness', price: 18000, rating: 4.7, image: '/product3.png' },
+    { id: 'cat5', title: 'Detox & Cleansing Blends', category: 'Wellness', price: 22000, rating: 4.9, image: '/product2.png' },
+    { id: 'cat6', title: 'Immune Support Formulas', category: 'Wellness', price: 30000, rating: 5.0, image: '/product6.png' },
+    { id: 'cat7', title: 'Mouthwash and Toothpaste', category: 'Oral Care', price: 8000, rating: 4.8, image: '/product5.png' },
   ];
 
   // GSAP animations
@@ -191,16 +212,45 @@ const MagicBento = () => {
             </p>
           </div>
 
-          <div className="relative w-screen left-1/2 -translate-x-1/2">
-            <InfiniteMovingCards
-              items={productRange.map(item => ({
-                ...item,
-                subtitle: "Premium Wellness",
-                renderIcon: () => <Icon icon={item.icon} className="text-2xl text-mlm-green-400" />
-              }))}
-              direction="left"
-              speed="slow"
-            />
+          <div className="relative w-full max-w-7xl mx-auto px-4 flex justify-center">
+            <div className="w-full max-w-[720px]">
+              <Carousel setApi={setApi} opts={{ align: 'start', loop: false }}>
+                <CarouselContent className="-ml-4">
+                  {productRange.map((p) => (
+                    <CarouselItem key={p.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                      <div
+                        className="flex flex-col items-start justify-between bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group cursor-pointer h-[340px]"
+                        onClick={() => navigate('/product', { state: { category: p.title } })}
+                      >
+                        <div className="mb-4 p-5 w-full">
+                          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white overflow-hidden ring-1 ring-slate-200">
+                            <img src={p.image} alt="" className="h-full w-full object-cover" />
+                          </span>
+                        </div>
+                        <div className="p-5 w-full">
+                          <div className="mb-1 font-black text-lg text-slate-900">{p.title}</div>
+                          <p className="text-sm text-slate-600">{p.category}</p>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate('/product', { state: { category: p.title } });
+                            }}
+                            className="mt-4 px-4 py-2 bg-mlm-green-500 hover:bg-mlm-green-600 text-white text-sm font-bold rounded-full transition-colors"
+                          >
+                            View Products
+                          </button>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+              <div className="text-slate-500 py-2 text-center text-sm">
+                Slide {current} of {count}
+              </div>
+            </div>
           </div>
 
           {/* <div className="flex justify-center mt-10">

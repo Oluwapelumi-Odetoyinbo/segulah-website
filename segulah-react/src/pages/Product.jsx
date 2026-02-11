@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { Navbar, Footer } from '../components/layout';
 
@@ -7,7 +7,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'p1',
     tag: 'New',
-    category: 'Skin Care',
+    category: 'Herbal Supplements',
     rating: 5,
     title: 'Segulah Bloom',
     price: 35000,
@@ -18,10 +18,11 @@ export const INITIAL_PRODUCTS = [
     inStock: true,
     description: 'Segulah Bloom is a revolutionary hydrating serum designed to rejuvenate dry skin. Infused with natural botanicals and hyaluronic acid, it locks in moisture for 24 hours, leaving your skin with a radiant, youthful glow. Perfect for those seeking deep hydration and a silky-smooth texture.'
   },
+
   {
     id: 'p2',
     tag: 'Hot',
-    category: 'Wellness',
+    category: 'Herbal Supplements',
     rating: 4.9,
     title: 'Segulah Vitality',
     price: 28000,
@@ -35,7 +36,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'p3',
     tag: 'Organic',
-    category: 'Wellness',
+    category: 'Essential Oils',
     rating: 5,
     title: 'Segulah Essence',
     price: 15000,
@@ -49,7 +50,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'p4',
     tag: 'Popular',
-    category: 'Skin Care',
+    category: 'Herbal Teas',
     rating: 4.8,
     title: 'Segulah Radiance',
     price: 42000,
@@ -63,7 +64,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'p5',
     tag: 'Detox',
-    category: 'Wellness',
+    category: 'Detox & Cleansing Blends',
     rating: 4.7,
     title: 'Segulah Pure',
     price: 12500,
@@ -77,7 +78,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'p6',
     tag: 'Luxury',
-    category: 'Skin Care',
+    category: 'Immune Support Formulas',
     rating: 5,
     title: 'Segulah Glow',
     price: 55000,
@@ -91,7 +92,7 @@ export const INITIAL_PRODUCTS = [
   {
     id: 'p7',
     tag: 'Immune',
-    category: 'Wellness',
+    category: 'Natural Skincare',
     rating: 4.9,
     title: 'Segulah Shield',
     price: 32000,
@@ -102,95 +103,15 @@ export const INITIAL_PRODUCTS = [
     inStock: true,
     description: 'Fortify your health with Segulah Shield. A master-blend of antioxidants, zinc, and Vitamin C, this supplement is designed to strengthen your natural defenses. It provides a robust protective barrier against environmental stressors, helping you stay resilient and healthy in any season.'
   },
-  {
-    id: 'p8',
-    tag: '50% off',
-    category: 'Skin Care',
-    rating: 4.9,
-    title: 'SilkSculpt Serum',
-    price: 25000,
-    original: 50000,
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1887&auto=format&fit=crop',
-    skinType: 'Normal',
-    promotion: 'On Sale',
-    inStock: true,
-    description: 'SilkSculpt Serum defines and contours your facial features with clinical precision. Formulated for normal skin, it utilizes revolutionary sculpting technology to visible reduce the appearance of fine lines and sagginess, delivering a firm, lifted, and silk-smooth complexion.'
-  },
-  {
-    id: 'p9',
-    tag: '20% off',
-    category: 'Skin Care',
-    rating: 4.8,
-    title: 'SilkSkin Serum',
-    price: 28000,
-    original: 35000,
-    image: 'https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=1780&auto=format&fit=crop',
-    skinType: 'Combination',
-    promotion: 'Best Sellers',
-    inStock: true,
-    description: 'Unlock the secret to flawless texture with SilkSkin Serum. Designed for combination skin, it expertly balances dry and oily patches while infusing the skin with essential vitamins. Its lightweight formula absorbs instantly, leaving your face feeling incredibly soft, just like pure silk.'
-  },
-  {
-    id: 'p10',
-    tag: '30% off',
-    category: 'Hair Care',
-    rating: 5,
-    title: 'Argan Glow',
-    price: 45000,
-    original: 64000,
-    image: 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg',
-    skinType: 'Dry',
-    promotion: 'Best Sellers',
-    inStock: true,
-    description: 'Argan Glow is a luxurious hair treatment that restores shine and strength to dry, damaged locks. Rich in Moroccan Argan oil and Vitamin E, it deeply penetrates the hair shaft to tame frizz and protect against heat styling. Your hair will be transformed from dull to dazzlingly radiant.'
-  },
-  {
-    id: 'p11',
-    tag: '10% off',
-    category: 'Body Care',
-    rating: 5,
-    title: 'Nephrolepis exaltata',
-    price: 18000,
-    original: 20000,
-    image: 'https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?q=80&w=1887&auto=format&fit=crop',
-    skinType: 'Sensitive',
-    promotion: 'New Arrivals',
-    inStock: true,
-    description: 'Inspired by the resilience of the Boston Fern, our Nephrolepis exaltata extract is a soothing body balm for sensitive skin. It provides a cooling effect that immediately calms inflammation and redness, deeply hydrating the body with long-lasting moisture and botanical goodness.'
-  },
-  {
-    id: 'p12',
-    tag: '50% off',
-    category: 'Makeup',
-    rating: 5,
-    title: 'Smooth Foundation',
-    price: 9500,
-    original: 19000,
-    image: 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/4734259a-bad7-422f-981e-ce01e79184f2_1600w.jpg',
-    skinType: 'Normal',
-    promotion: 'On Sale',
-    inStock: false,
-    description: 'Achieve a professional finish with Segulah’s Smooth Foundation. This full-coverage, long-wear formula effortlessly hides imperfections while nourishing the skin with antioxidants. It’s lightweight and breathable, ensuring your makeup stays fresh and smooth from morning until midnight.'
-  },
-  {
-    id: 'p13',
-    tag: '50% off',
-    category: 'Body Care',
-    rating: 5,
-    title: 'Smooth Body Cream',
-    price: 12000,
-    original: 24000,
-    image: 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c543a9e1-f226-4ced-80b0-feb8445a75b9_1600w.jpg',
-    skinType: 'Dry',
-    promotion: 'On Sale',
-    inStock: true,
-    description: 'Our Smooth Body Cream is a rich, buttery moisturizer specifically formulated for very dry skin. Using a blend of Shea butter and cocoa extracts, it forms a protective layer that keeps moisture in and dryness out. Your skin will feel soft, supple, and delicately scented for hours.'
-  }
 ];
+
 
 const Product = () => {
   const navigate = useNavigate();
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const location = useLocation();
+  const [selectedCategories, setSelectedCategories] = useState(
+    location.state?.category ? [location.state.category] : []
+  );
   const [selectedSkinTypes, setSelectedSkinTypes] = useState([]);
   const [maxPrice, setMaxPrice] = useState(100000);
   const [selectedRating, setSelectedRating] = useState(null);
@@ -404,7 +325,7 @@ const Product = () => {
         {/* Background Image Banner */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://media.istockphoto.com/id/1418267688/photo/aerial-top-down-view-of-a-large-container-cargo-ship-with-copy-space.webp?a=1&b=1&s=612x612&w=0&k=20&c=yXzWMw68-mvyR5Nz82hXKZBlgRbuNwN1uuN5r7whL8E="
+            src="https://media.istockphoto.com/id/2151398295/photo/natural-vitamins-plant-based-supplements.jpg?s=612x612&w=0&k=20&c=sthEPyyphJsWrjp7tHn0qFECrZ0Gr_2rqw6IcsGG3WQ="
             alt="Shop Banner"
             className="w-full h-full object-cover"
           />
@@ -438,25 +359,6 @@ const Product = () => {
         <div className="flex flex-col lg:flex-row gap-12">
           <aside className="w-full lg:w-72 shrink-0 space-y-10">
             <h2 className="text-base font-semibold tracking-tight text-[#111827]">Filter Options</h2>
-
-            <div>
-              <h3 className="text-sm font-semibold text-[#111827] mb-4">By Categories</h3>
-              <ul className="space-y-3">
-                {['Skin Care', 'Makeup', 'Hair Care', 'Fragrances', 'Nail Care', 'Body Care', 'Wellness'].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-3 group cursor-pointer"
-                    onClick={() => toggleFilter(item, selectedCategories, setSelectedCategories)}
-                  >
-                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedCategories.includes(item) ? 'bg-mlm-green-500 border-mlm-green-500 text-white' : 'border-gray-300 text-transparent group-hover:border-mlm-green-500'}`}>
-                      <Icon icon="lucide:check" className="w-3.5 h-3.5" />
-                    </div>
-                    <span className={`text-sm transition-colors ${selectedCategories.includes(item) ? 'text-mlm-green-500 font-medium' : 'text-gray-600 group-hover:text-mlm-green-500'}`}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
             <div className="pt-4 border-t border-gray-100">
               <h3 className="text-sm font-semibold text-[#111827] mb-4">Price (Up to ₦{maxPrice.toLocaleString()})</h3>
               <div className="px-1">
@@ -476,66 +378,26 @@ const Product = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-gray-100">
-              <h3 className="text-sm font-semibold text-[#111827] mb-4">Review</h3>
+
+            <div>
+              <h3 className="text-sm font-semibold text-[#111827] mb-4">By Categories</h3>
               <ul className="space-y-3">
-                {[5, 4, 3, 2, 1].map((stars) => (
+                {['Herbal Supplements', 'Herbal Teas', 'Natural Skincare', 'Essential Oils', 'Detox & Cleansing Blends', 'Immune Support Formulas', 'Mouthwash and Toothpaste'].map((item) => (
                   <li
-                    key={stars}
-                    className="flex items-center gap-3 cursor-pointer group"
-                    onClick={() => setSelectedRating(selectedRating === stars ? null : stars)}
+                    key={item}
+                    className="flex items-center gap-3 group cursor-pointer"
+                    onClick={() => toggleFilter(item, selectedCategories, setSelectedCategories)}
                   >
-                    <div className={`w-5 h-5 border rounded transition-colors ${selectedRating === stars ? 'bg-mlm-green-500 border-mlm-green-500' : 'border-gray-300 group-hover:border-mlm-green-500'}`} />
-                    <div className="flex text-yellow-400">
-                      {[1, 2, 3, 4, 5].map((index) => (
-                        <Icon
-                          key={index}
-                          icon="lucide:star"
-                          className={`w-4 h-4 ${index <= stars ? 'text-yellow-400' : 'text-gray-300'}`}
-                        />
-                      ))}
+                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedCategories.includes(item) ? 'bg-mlm-green-500 border-mlm-green-500 text-white' : 'border-gray-300 text-transparent group-hover:border-mlm-green-500'}`}>
+                      <Icon icon="lucide:check" className="w-3.5 h-3.5" />
                     </div>
-                    <span className={`text-sm transition-colors ${selectedRating === stars ? 'text-mlm-green-500 font-medium' : 'text-gray-600 group-hover:text-mlm-green-500'}`}>{stars} Star{stars > 1 && 's'}</span>
+                    <span className={`text-sm transition-colors ${selectedCategories.includes(item) ? 'text-mlm-green-500 font-medium' : 'text-gray-600 group-hover:text-mlm-green-500'}`}>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="pt-4 border-t border-gray-100">
-              <h3 className="text-sm font-semibold text-[#111827] mb-4">By Promotions</h3>
-              <ul className="space-y-3">
-                {['New Arrivals', 'Best Sellers', 'On Sale'].map((promo) => (
-                  <li
-                    key={promo}
-                    className="flex items-center gap-3 cursor-pointer group"
-                    onClick={() => toggleFilter(promo, selectedPromotions, setSelectedPromotions)}
-                  >
-                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedPromotions.includes(promo) ? 'bg-mlm-green-500 border-mlm-green-500 text-white' : 'border-gray-300 text-transparent group-hover:border-mlm-green-500'}`}>
-                      <Icon icon="lucide:check" className="w-3.5 h-3.5" />
-                    </div>
-                    <span className={`text-sm transition-colors ${selectedPromotions.includes(promo) ? 'text-mlm-green-500 font-medium' : 'text-gray-600 group-hover:text-mlm-green-500'}`}>{promo}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
 
-            <div className="pt-4 border-t border-gray-100">
-              <h3 className="text-sm font-semibold text-[#111827] mb-4">Availability</h3>
-              <ul className="space-y-3">
-                {['In Stock', 'Out of Stocks'].map((status) => (
-                  <li
-                    key={status}
-                    className="flex items-center gap-3 cursor-pointer group"
-                    onClick={() => toggleFilter(status, selectedAvailability, setSelectedAvailability)}
-                  >
-                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedAvailability.includes(status) ? 'bg-mlm-green-500 border-mlm-green-500 text-white' : 'border-gray-300 text-transparent group-hover:border-mlm-green-500'}`}>
-                      <Icon icon="lucide:check" className="w-3.5 h-3.5" />
-                    </div>
-                    <span className={`text-sm transition-colors ${selectedAvailability.includes(status) ? 'text-mlm-green-500 font-medium' : 'text-gray-600 group-hover:text-mlm-green-500'}`}>{status}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </aside>
 
           <div className="flex-1">

@@ -83,9 +83,6 @@ const ProductDetails = () => {
   // Mock thumbnails based on the main image if they don't exist
   const thumbnails = [
     product.image,
-    'https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=400&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=400&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=400&auto=format&fit=crop'
   ];
 
   return (
@@ -344,7 +341,7 @@ const ProductDetails = () => {
         </div>
 
         {/* Tabs Navigation */}
-        <div className="mt-16 border-b border-gray-100">
+        {/* <div className="mt-16 border-b border-gray-100">
           <div className="flex justify-center gap-10">
             {['Description', 'Review'].map((tab) => (
               <button
@@ -361,7 +358,6 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* Tab Content */}
         <div className="mt-10 max-w-5xl mx-auto mb-16">
           {activeTab === 'Description' ? (
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
@@ -392,7 +388,6 @@ const ProductDetails = () => {
             </div>
           ) : (
             <>
-              {/* Reviews Summary */}
               <div className="flex flex-col md:flex-row items-center gap-10 mb-14 py-8 border-b border-gray-100">
                 <div className="shrink-0 text-center md:text-left">
                   <div className="flex items-baseline justify-center md:justify-start gap-2">
@@ -420,7 +415,6 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              {/* Review List */}
               <div className="space-y-12">
                 {[1, 2].map((review) => (
                   <div key={review} className="transition-colors group">
@@ -463,7 +457,7 @@ const ProductDetails = () => {
               </div>
             </>
           )}
-        </div>
+        </div> */}
       </div>
 
       <Footer />
