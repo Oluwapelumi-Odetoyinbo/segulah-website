@@ -203,7 +203,7 @@ const MagicBento = () => {
             />
           </div>
 
-          <div className="flex justify-center mt-10">
+          {/* <div className="flex justify-center mt-10">
             <a
               href="#"
               target="_blank"
@@ -213,7 +213,7 @@ const MagicBento = () => {
               Explore Full Catalog
               <Icon icon="solar:arrow-right-bold" className="transition-transform group-hover:translate-x-1" />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

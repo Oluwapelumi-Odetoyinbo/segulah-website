@@ -126,8 +126,8 @@ const Products = () => {
           {/* Value Proposition - What You Do */}
           <div className="max-w-3xl mx-auto space-y-4">
             <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-slate-800 leading-relaxed">
-              Transforming Lives Through Natural Wellness &
-              <span className="text-mlm-green-600"> Financial Empowerment</span>
+              Where nature-powered wellness meets
+              <span className="text-mlm-green-600"> life-changing opportunity.</span>
             </p>
           </div>
 
