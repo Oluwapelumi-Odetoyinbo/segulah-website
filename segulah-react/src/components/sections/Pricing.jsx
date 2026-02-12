@@ -316,11 +316,7 @@ const Pricing = () => {
           ))}
         </div>
         
-        {/* Bottom Note */}
-        <p className="text-center text-sm text-slate-500 mt-12">
-          All packages include access to the mobile app and 24/7 system availability. 
-          <a href="#" className="text-mlm-green-500 hover:underline ml-1">Compare packages in detail →</a>
-        </p>
+       
       </div>
     </section>
   );

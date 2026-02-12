@@ -130,13 +130,7 @@ const Hero = () => {
                 Get Started Free
                 <Icon icon="solar:arrow-right-linear" className="ml-2" />
               </a>
-              <Link
-                to="/product"
-                className="px-8 py-4 rounded-full text-base font-semibold transition-all border border-slate-200 text-slate-700 hover:border-mlm-green-200 hover:text-mlm-green-600 bg-white inline-flex items-center justify-center"
-              >
-                Browse Products
-                <Icon icon="solar:bag-3-outline" className="ml-2" />
-              </Link>
+              
             </div>
           </div>
 

@@ -28,7 +28,7 @@ const Footer = () => {
             Ready to build your<br />financial freedom?
           </h2>
           <p className="text-slate-400 mb-8">
-            Join thousands of Nigerians earning with Segulah Global. Sign up today and start building your network.
+            Join thousands earning with Segulah Global. Sign up today and start building your network.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -45,9 +45,9 @@ const Footer = () => {
 
         <div className="border-t pt-12 grid md:grid-cols-4 gap-8 text-sm border-slate-800">
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
+            {/* <div className="flex items-center gap-2 mb-4">
               <img src="/logo.png" alt="Segulah Global" className="h-8 w-auto" />
-            </div>
+            </div> */}
             <p className="text-slate-400 mb-4">Your trusted MLM platform for building wealth through network marketing.</p>
             <div className="space-y-2">
               <p className="text-slate-400 flex items-center gap-2">
